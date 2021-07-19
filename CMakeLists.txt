@@ -1,80 +1,77 @@
-##############################################################################
-# CMake
-##############################################################################
-
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.0.2)
 project(py_trees_ros_interfaces)
 
-# Default to C++14
-if(NOT CMAKE_CXX_STANDARD)
-  set(CMAKE_CXX_STANDARD 14)
-endif()
-if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-  add_compile_options(-Wall -Wextra -Wpedantic)
-endif()
-
-##############################################################################
-# Dependencies
-##############################################################################
-
-find_package(ament_cmake REQUIRED)
-find_package(builtin_interfaces REQUIRED)
-find_package(rosidl_default_generators REQUIRED)
-find_package(action_msgs REQUIRED)
-find_package(diagnostic_msgs REQUIRED)
-find_package(geometry_msgs REQUIRED)
-find_package(unique_identifier_msgs REQUIRED)
-
-##############################################################################
-# Messages
-##############################################################################
-
-set(action_files
-  "action/Dock.action"
-  "action/Rotate.action"
-  "action/MoveBase.action"
+find_package(catkin REQUIRED COMPONENTS
+  message_generation
+  std_msgs
+  actionlib_msgs
+  diagnostic_msgs
+  geometry_msgs
+  unique_identifier_msgs
 )
 
-set(msg_files
-  "msg/ActivityItem.msg"
-  "msg/Behaviour.msg"
-  "msg/BehaviourTree.msg"
-  "msg/KeyValue.msg"
-  "msg/PublisherDetails.msg"
-  "msg/Statistics.msg"
-  "msg/ServiceDetails.msg"
-  "msg/SnapshotStreamParameters.msg"
-  "msg/SubscriberDetails.msg"
+## Generate messages in the 'msg' folder
+add_message_files(
+  FILES
+  ActivityItem.msg
+  Behaviour.msg
+  BehaviourTree.msg
+  KeyValue.msg
+  PublisherDetails.msg
+  Statistics.msg
+  ServiceDetails.msg
+  SnapshotStreamParameters.msg
+  SubscriberDetails.msg
 )
 
-set(srv_files
-  "srv/CloseBlackboardStream.srv"
-  "srv/CloseSnapshotStream.srv"
-  "srv/GetBlackboardVariables.srv"
-  "srv/IntrospectPublishers.srv"
-  "srv/IntrospectServices.srv"
-  "srv/IntrospectSubscribers.srv"
-  "srv/OpenBlackboardStream.srv"
-  "srv/OpenSnapshotStream.srv"
-  "srv/ReconfigureSnapshotStream.srv"
-  "srv/StatusReport.srv"
+## Generate services in the 'srv' folder
+add_service_files(
+  FILES
+  CloseBlackboardStream.srv
+  CloseSnapshotStream.srv
+  GetBlackboardVariables.srv
+  IntrospectPublishers.srv
+  IntrospectServices.srv
+  IntrospectSubscribers.srv
+  OpenBlackboardStream.srv
+  OpenSnapshotStream.srv
+  ReconfigureSnapshotStream.srv
+  StatusReport.srv
 )
 
-rosidl_generate_interfaces(${PROJECT_NAME}
-  ${srv_files}
-  ${msg_files}
-  ${action_files}
+## Generate actions in the 'action' folder
+add_action_files(
+  FILES
+  Dock.action
+  Rotate.action
+  MoveBase.action
+)
+
+## Generate added messages and services with any dependencies listed here
+generate_messages(
   DEPENDENCIES
-    action_msgs  # even though not directly using, it requires some trace back
-    diagnostic_msgs
-    geometry_msgs
-    unique_identifier_msgs
-  # ADD_LINTER_TESTS  # very expensive
+  std_msgs
+  actionlib_msgs
+  diagnostic_msgs
+  geometry_msgs
+  unique_identifier_msgs
 )
-##############################################################################
-# Package
-##############################################################################
 
-ament_export_dependencies(rosidl_default_runtime)
+###################################
+## catkin specific configuration ##
+###################################
+catkin_package(
+#  INCLUDE_DIRS include
+#  LIBRARIES py_trees_ros_interfaces
+  CATKIN_DEPENDS message_runtime std_msgs actionlib_msgs diagnostic_msgs geometry_msgs unique_identifier_msgs
+#  DEPENDS system_lib
+)
 
-ament_package()
+###########
+## Build ##
+###########
+
+include_directories(
+# include
+  ${catkin_INCLUDE_DIRS}
+)
