@@ -2,11 +2,11 @@ cmake_minimum_required(VERSION 3.0.2)
 project(py_trees_ros_interfaces)
 
 find_package(catkin REQUIRED COMPONENTS
-  message_generation
-  std_msgs
   actionlib_msgs
   diagnostic_msgs
   geometry_msgs
+  message_generation
+  std_msgs
   unique_identifier_msgs
 )
 
@@ -18,9 +18,9 @@ add_message_files(
   BehaviourTree.msg
   KeyValue.msg
   PublisherDetails.msg
-  Statistics.msg
   ServiceDetails.msg
   SnapshotStreamParameters.msg
+  Statistics.msg
   SubscriberDetails.msg
 )
 
@@ -43,17 +43,17 @@ add_service_files(
 add_action_files(
   FILES
   Dock.action
-  Rotate.action
   MoveBase.action
+  Rotate.action
 )
 
 ## Generate added messages and services with any dependencies listed here
 generate_messages(
   DEPENDENCIES
-  std_msgs
   actionlib_msgs
   diagnostic_msgs
   geometry_msgs
+  std_msgs
   unique_identifier_msgs
 )
 
@@ -63,7 +63,13 @@ generate_messages(
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES py_trees_ros_interfaces
-  CATKIN_DEPENDS message_runtime std_msgs actionlib_msgs diagnostic_msgs geometry_msgs unique_identifier_msgs
+  CATKIN_DEPENDS
+    actionlib_msgs
+    diagnostic_msgs
+    geometry_msgs
+    message_runtime
+    std_msgs
+    unique_identifier_msgs
 #  DEPENDS system_lib
 )
 
